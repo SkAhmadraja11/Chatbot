@@ -1,0 +1,147 @@
+.chatbot-container {
+  width: 420px;
+  margin: 50px auto;
+  background: #fefefe;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  font-family: "Poppins", sans-serif;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: linear-gradient(90deg, #ff7b54, #ffb26b);
+  color: white;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 15px;
+  letter-spacing: 0.5px;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.message {
+  display: flex;
+  align-items: flex-end;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  animation: popIn 0.3s ease;
+}
+
+.message.user .bubble {
+  background: #0078ff;
+  color: white;
+  border-bottom-right-radius: 3px;
+}
+
+.message.bot .bubble {
+  background: #e8e8e8;
+  color: #333;
+  border-bottom-left-radius: 3px;
+}
+
+/* Typing indicator */
+.typing-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 40px;
+  height: 20px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: #aaa;
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes blink {
+  0%, 80%, 100% {
+    opacity: 0.2;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.chat-input {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+  background: white;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  background: #f1f1f1;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.chat-input button {
+  background: #0078ff;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  margin-left: 8px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.chat-input button:hover {
+  background: #005fd1;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+}
+.input:focus {
+  outline: 3px solid rgba(0,120,255,0.12);
+  outline-offset: 3px;
+}
