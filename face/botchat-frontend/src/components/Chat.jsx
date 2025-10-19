@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
+import Navbar from "./Navbar";
+import History from "./History";
+import Profile from "./Profile";
 import axios from "axios";
 import "./Chat.css"; // Make sure Chat.css is in the same folder
 
@@ -9,6 +12,8 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [stompClient, setStompClient] = useState(null);
+  const [currentSection, setCurrentSection] = useState("chat");
+  const [username] = useState(() => localStorage.getItem("username") || "Guest");
   // refs to remember messages we've already added so we can avoid duplicates
   const seenIdsRef = useRef(new Set());
   const seenSigsRef = useRef(new Set());
@@ -103,40 +108,49 @@ const Chat = () => {
   };
 
   return (
-    <div className="chatbot-container">
-      <div className="chat-header">🛍️ Note-G Assistant</div>
+    <div>
+      <Navbar onSectionChange={setCurrentSection} currentSection={currentSection} />
 
-      <div className="chat-body">
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`message ${msg.sender === "User" ? "user" : "bot"}`}
-          >
-            <div className="bubble">{msg.content}</div>
+      {currentSection === "chat" && (
+        <div className="chatbot-container">
+          <div className="chat-header">🛍️ Note-G Assistant</div>
+
+          <div className="chat-body">
+            {messages.map((msg, idx) => (
+              <div
+                key={msg.localId || idx}
+                className={`message ${msg.sender === "User" ? "user" : "bot"}`}
+              >
+                <div className="bubble">{msg.content}</div>
+              </div>
+            ))}
+
+            {isTyping && (
+              <div className="message bot typing">
+                <div className="bubble typing-bubble">
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                  <span className="dot"></span>
+                </div>
+              </div>
+            )}
           </div>
-        ))}
 
-        {isTyping && (
-          <div className="message bot typing">
-            <div className="bubble typing-bubble">
-              <span className="dot"></span>
-              <span className="dot"></span>
-              <span className="dot"></span>
-            </div>
+          <div className="chat-input">
+            <input
+              type="text"
+              placeholder="Ask Anything..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            />
+            <button onClick={sendMessage}>➤</button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="chat-input">
-        <input
-          type="text"
-          placeholder="Ask Anything..."
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-        />
-        <button onClick={sendMessage}>➤</button>
-      </div>
+      {currentSection === "history" && <History username={username} />}
+      {currentSection === "profile" && <Profile username={username} />}
     </div>
   );
 };
